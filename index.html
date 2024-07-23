@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English to Symbol Translator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .translator, .symbol-table {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            flex: 1;
+            max-width: 450px;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            word-wrap: break-word;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .symbol {
+            cursor: pointer;
+            font-size: 24px;
+            margin: 5px;
+            display: inline-block;
+            padding: 5px;
+            transition: background-color 0.3s;
+        }
+        .symbol:hover {
+            background-color: #e0e0e0;
+        }
+        .symbol-table h2 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>English to Symbol Translator</h1>
+    <div class="container">
+        <div class="translator">
+            <input type="text" id="inputText" placeholder="Enter text to translate">
+            <button onclick="translateText()">Translate to Symbols</button>
+            <div id="result" class="result"></div>
+        </div>
+        <div class="symbol-table">
+            <h2>Symbol Table</h2>
+            <div id="symbols"></div>
+            <input type="text" id="symbolText" placeholder="Enter symbols to translate">
+            <button onclick="reverseTranslateText()">Translate to English</button>
+            <div id="reverseResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const symbolMap = {
+            'A': '🌀', 'B': '🦄', 'C': '🎭', 'D': '🍄', 'E': '🧩', 
+            'F': '🛸', 'G': '🐉', 'H': '🧟', 'I': '🧃', 'J': '🔮', 
+            'K': '🎨', 'L': '🐾', 'M': '🚀', 'N': '🎷', 'O': '📜', 
+            'P': '🎲', 'Q': '🧸', 'R': '🌟', 'S': '🧙', 'T': '🏹', 
+            'U': '🧬', 'V': '🧭', 'W': '🌌', 'X': '🧊', 'Y': '🧪', 
+            'Z': '🧞'
+        };
+
+        const reverseSymbolMap = {
+            '🌀': 'A', '🦄': 'B', '🎭': 'C', '🍄': 'D', '🧩': 'E', 
+            '🛸': 'F', '🐉': 'G', '🧟': 'H', '🧃': 'I', '🔮': 'J', 
+            '🎨': 'K', '🐾': 'L', '🚀': 'M', '🎷': 'N', '📜': 'O', 
+            '🎲': 'P', '🧸': 'Q', '🌟': 'R', '🧙': 'S', '🏹': 'T', 
+            '🧬': 'U', '🧭': 'V', '🌌': 'W', '🧊': 'X', '🧪': 'Y', 
+            '🧞': 'Z'
+        };
+
+        function translateText() {
+            let inputText = document.getElementById("inputText").value.toUpperCase();
+            let translatedText = "";
+            for (let char of inputText) {
+                if (symbolMap[char]) {
+                    translatedText += symbolMap[char];
+                } else {
+                    translatedText += char; // Keep non-alphabetic characters as they are
+                }
+            }
+            document.getElementById("result").innerText = translatedText;
+        }
+
+        function reverseTranslateText() {
+            let symbolText = document.getElementById("symbolText").value;
+            let translatedText = "";
+            for (let char of symbolText) {
+                if (reverseSymbolMap[char]) {
+                    translatedText += reverseSymbolMap[char];
+                } else {
+                    translatedText += char; // Keep non-matching characters as they are
+                }
+            }
+            document.getElementById("reverseResult").innerText = translatedText;
+        }
+
+        function insertSymbol(symbol) {
+            document.getElementById("symbolText").value += symbol;
+        }
+
+        function populateSymbolTable() {
+            let symbolTable = document.getElementById("symbols");
+            for (let symbol in reverseSymbolMap) {
+                let symbolElement = document.createElement("span");
+                symbolElement.className = "symbol";
+                symbolElement.innerText = symbol;
+                symbolElement.onclick = () => insertSymbol(symbol);
+                symbolTable.appendChild(symbolElement);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", populateSymbolTable);
+    </script>
+</body>
+</html>
